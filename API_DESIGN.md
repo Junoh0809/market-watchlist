@@ -122,6 +122,8 @@ Authorization: Bearer <access-token>
       "sourceTimestamp": "2026-10-14T05:18:00Z",
       "displayTimestamp": "2026-10-14T14:18:00+09:00",
       "displayTimezone": "Asia/Seoul",
+      "exchangeTimestamp": "2026-10-14T01:18:00-04:00",
+      "exchangeTimezone": "America/New_York",
       "retrievedAt": "2026-10-14T05:19:05Z",
       "status": "NORMAL"
     }
@@ -161,10 +163,39 @@ Authorization: Bearer <access-token>
       "sourceTimestamp": "2026-10-14T05:15:00Z",
       "displayTimestamp": "2026-10-14T14:15:00+09:00",
       "displayTimezone": "Asia/Seoul",
+      "exchangeTimestamp": "2026-10-14T14:15:00+09:00",
+      "exchangeTimezone": "Asia/Seoul",
       "status": "NORMAL"
     }
   ],
-  "screenRefreshedAt": "2026-10-14T05:20:00Z"
+  "screenRefreshedAt": "2026-10-14T14:20:00+09:00"
+}
+```
+
+### 공급자 수집 상태
+
+```http
+GET /api/v1/provider-status
+Authorization: Bearer <access-token>
+```
+
+조회한 종목별 마지막 수집 시도와 성공·실패 시각을 반환한다. 실제 공급자 수집이 연결되기 전에는 목업 시세의 수집 이력만 포함한다. 아직 조회된 적이 없는 종목은 목록에 없다.
+
+```json
+{
+  "items": [
+    {
+      "provider": "mock",
+      "market": "US",
+      "symbol": "AAPL",
+      "status": "NORMAL",
+      "lastAttemptAt": "2026-10-14T05:19:05Z",
+      "lastSuccessAt": "2026-10-14T05:19:05Z",
+      "lastFailureAt": null,
+      "sourceTimestamp": "2026-10-14T05:18:00Z",
+      "lastError": null
+    }
+  ]
 }
 ```
 
@@ -225,7 +256,7 @@ API Controller
 - 프론트엔드는 API를 60초마다 polling한다.
 - 60초 polling은 외부 공급자 호출 주기를 의미하지 않는다.
 - 서버 수집 작업은 무료 공급자가 제공하는 주기와 호출 한도에 맞춘다.
-- `sourceTimestamp`에는 공급자가 제공한 원본 기준 시각과 원본 시간대 정보를 보존한다.
+- `sourceTimestamp`는 원본 기준 시각의 UTC 순간을 나타낸다. 현재 목업은 시장별 거래소 시간대를 `exchangeTimestamp`와 `exchangeTimezone`으로 함께 제공한다. 실제 공급자 연동 시 공급자가 제공한 원본 시간대도 보존한다.
 - `displayTimestamp`와 `displayPublishedAt`은 `Asia/Seoul` 기준으로 생성한다.
 - 미국 거래소 시간은 거래소 시간대 규칙과 서머타임을 적용해 변환한다.
 - `retrievedAt`은 서버가 공급자 응답을 수집한 시각이다.

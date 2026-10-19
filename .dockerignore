@@ -1,0 +1,8 @@
+.git
+.idea
+.codex
+target
+frontend/node_modules
+frontend/dist
+gemini-worker/node_modules
+*.log

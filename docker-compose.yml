@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: stocks
+      POSTGRES_USER: stocks
+      POSTGRES_PASSWORD: ${STOCK_DB_PASSWORD:-stocks}
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - stock_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stocks -d stocks"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      STOCK_MOCK_QUOTE_SCENARIO: ${STOCK_MOCK_QUOTE_SCENARIO:-NORMAL}
+      STOCK_DB_URL: jdbc:postgresql://db:5432/stocks
+      STOCK_DB_USER: stocks
+      STOCK_DB_PASSWORD: ${STOCK_DB_PASSWORD:-stocks}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: /api/v1
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  stock_data:
