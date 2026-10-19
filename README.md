@@ -94,3 +94,7 @@ cd frontend && npm test && npm run build
 미구현 기능과 이후 착수 기준은 [PLAN.md의 후속 작업 진행 현황](PLAN.md#후속-작업-진행-현황-2026-10-17)에 기록했습니다.
 
 목업 시세의 시작 상태는 `STOCK_MOCK_QUOTE_SCENARIO` 환경변수로 `NORMAL`(기본값), `DELAYED`, `FAILURE`, `UPDATING` 중 선택할 수 있습니다. 처음부터 `FAILURE`면 가격 없이 `UPDATING`을 반환합니다. 정상 수집 후 실패하면 마지막 가격과 `LAST_KNOWN`을 반환하는 흐름은 자동화 테스트에서 시나리오를 전환해 검증합니다.
+
+## AI 활용 고지
+
+이 프로젝트는 AI 도구의 도움을 받아 설계·구현·문서화했습니다. 생성된 코드와 문서는 사람이 검토하고 테스트한 뒤 반영합니다.
