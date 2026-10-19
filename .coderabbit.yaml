@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: ko-KR
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  review_details: true
+  enable_prompt_for_ai_agents: true
+  path_filters:
+    - "!**/node_modules/**"
+    - "!target/**"
+    - "!frontend/dist/**"
+  path_instructions:
+    - path: "src/main/java/**/*.java"
+      instructions: |
+        - 인증·인가, 사용자별 데이터 격리, 입력 검증과 예외 처리를 중점적으로 검토한다.
+        - 목업 데이터와 실제 운영 데이터의 경계를 확인한다.
+        - 보안상 위험하거나 운영 장애를 일으킬 수 있는 문제는 우선순위를 높게 표시한다.
+    - path: "src/main/resources/**"
+      instructions: |
+        - 비밀정보가 하드코딩되지 않았는지 확인한다.
+        - 데이터베이스 마이그레이션의 호환성과 재실행 안전성을 확인한다.
+    - path: "frontend/src/**"
+      instructions: |
+        - 인증 상태, API 오류 처리, 로딩·갱신 상태와 사용자 경험을 검토한다.
+        - React 상태 관리와 렌더링 회귀 가능성을 확인한다.
+    - path: "**/*Test.java"
+      instructions: |
+        - 정상 경로뿐 아니라 인증 실패, 권한 격리, 공급자 장애와 경계값을 검토한다.
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 2
+    drafts: false
+    ignore_title_keywords:
+      - "WIP"
+      - "[skip review]"
