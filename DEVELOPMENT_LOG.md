@@ -2,6 +2,15 @@
 
 이 문서는 실제 개발 과정을 시간순으로 기록한다. 제품 요구사항과 범위는 `PLAN.md`에 기록하고, 이 파일에는 착수·변경·검증 결과와 다음 작업을 기록한다.
 
+## 2026-10-19
+
+### GitHub PR 검증 기반 준비
+
+- CodeRabbit 리뷰와 함께 사용할 GitHub Actions CI를 추가했다.
+- Pull Request와 `main` 브랜치 push에서 Java 21 백엔드 테스트, React 테스트와 빌드를 실행한다.
+- 다음 작업: CodeRabbit GitHub App을 저장소에 연결한 뒤 작업 브랜치와 PR 기반으로 개발한다.
+- 변경 파일: `.github/workflows/ci.yml`, `DEVELOPMENT_LOG.md`
+
 ## 2026-10-14
 
 ### 14:20 KST — 개발 착수 기준 확인 및 로그 생성
